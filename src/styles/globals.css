@@ -22,7 +22,7 @@
   --green-soft: #e9f6ee;
   --green-soft-2: #f0f9f3;
 
-  /* Skor Nutri-Level resmi Kemenkes (A–D) */
+  /* Skor Nutri-Level resmi (A–D) */
   --nl-a: #1a7a3d;
   --nl-b: #7ab829;
   --nl-c: #f4a81d;
@@ -193,7 +193,7 @@ a { color: inherit; }
 }
 .ns-sb-close:hover { background: var(--bg-soft); color: var(--ink); border-color: var(--faint); transform: translateX(1px); }
 
-/* Tombol mengambang untuk membuka sidebar */
+/* Tombol sidebar */
 .ns-sb-open {
   position: fixed;
   left: 0; bottom: 24px; top: auto;
@@ -257,7 +257,7 @@ a { color: inherit; }
 }
 .ns-step.done .ns-dot { background: var(--green); border-color: var(--green); color: #fff; }
 
-/* Animasi pulse membesar-mengecil pada ikon aktif */
+/* Animasi pulse */
 .ns-dot-pulse {
   animation: ns-dot-pulse 1.6s ease-in-out infinite;
 }

@@ -1,4 +1,3 @@
-// ProcessingScreen.jsx
 import { useEffect, useRef, useState } from 'react'
 import { analyzeImage } from '../../api/client.js'
 import { Spinner } from '@/components/ui/spinner'
@@ -13,6 +12,7 @@ const FRUITS = ['🍎', '🧃', '🍋', '🫐', '🥤', '🍊']
 export default function ProcessingScreen({ blob, previewUrl, onDone, onError }) {
   const [active, setActive] = useState(0)
   const [error, setError] = useState('')
+  const [cropPreviewUrl, setCropPreviewUrl] = useState(null)
   const resultRef = useRef(null)
   const doneRef = useRef(false)
 
@@ -21,6 +21,19 @@ export default function ProcessingScreen({ blob, previewUrl, onDone, onError }) 
     analyzeImage(blob)
       .then((r) => { resultRef.current = r })
       .catch((e) => setError(e.message || 'Analisis gagal.'))
+  }, [blob])
+
+  // Tampilkan gambar hasil crop di lensa tengah selama pemrosesan.
+  useEffect(() => {
+    if (!blob) {
+      setCropPreviewUrl(null)
+      return
+    }
+    const url = typeof blob === 'string' ? blob : URL.createObjectURL(blob)
+    setCropPreviewUrl(url)
+    return () => {
+      if (typeof blob !== 'string') URL.revokeObjectURL(url)
+    }
   }, [blob])
 
   useEffect(() => {
@@ -81,7 +94,11 @@ export default function ProcessingScreen({ blob, previewUrl, onDone, onError }) 
 
         {/* Lensa tengah: pratinjau label + garis pindai turun berulang dari atas */}
         <div className="ns-lens">
-          {previewUrl ? <img src={previewUrl} alt="Label sedang dianalisis" /> : null}
+          {cropPreviewUrl ? (
+            <img src={cropPreviewUrl} alt="Label sedang dianalisis" />
+          ) : previewUrl ? (
+            <img src={previewUrl} alt="Label sedang dianalisis" />
+          ) : null}
           <div className="ns-lens-line" />
           <div className="ns-lens-overlay" aria-hidden="true" />
         </div>

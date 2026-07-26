@@ -72,6 +72,7 @@ export default function App() {
         message={status.message}
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        onBrandClick={() => { setStep('beranda'); closeOnMobile(); }}
       />
 
       {/* Bg gelap saat drawer terbuka di mobile */}
