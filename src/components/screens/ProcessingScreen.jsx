@@ -106,7 +106,7 @@ export default function ProcessingScreen({ blob, previewUrl, onDone, onError }) 
 
       <h2 className="ns-proc-title">Sedang menganalisis label minuman…</h2>
       <p className="ns-proc-sub">
-        Membaca kandungan gula, garam, dan lemak jenuh untuk menghitung skor kesehatan minuman.
+        Membaca kandungan gula, garam, dan lemak jenuh untuk menghitung Nutri-Level minuman.
       </p>
 
       <div className="ns-step-list">
