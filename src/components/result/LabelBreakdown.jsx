@@ -183,7 +183,7 @@ function Lightbox({ src, onClose }) {
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const dragRef = useRef(null)
 
-  // scroll halaman selama lightbox terbuka.
+  // Bekukan scroll halaman selama lightbox terbuka.
   useEffect(() => {
     const prevHtml = document.documentElement.style.overflow
     const prevBody = document.body.style.overflow

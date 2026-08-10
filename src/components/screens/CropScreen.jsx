@@ -77,6 +77,7 @@ export default function CropScreen({ image, onConfirm, onBack }) {
   const [preview, setPreview] = useState(null)
   const [busy, setBusy] = useState(false)
   const [rotating, setRotating] = useState(false)
+  // Zoom: nilai float, diterapkan via CSS transform pada kontainer gambar
   const [zoom, setZoom] = useState(1)
   const imgRef = useRef(null)
   const debRef = useRef(null)
@@ -93,7 +94,7 @@ export default function CropScreen({ image, onConfirm, onBack }) {
     setPixelCrop(d.pixel)
   }, [])
 
-  // Pratinjau hasil
+  // Pratinjau hasil — di-debounce agar ringan
   useEffect(() => {
     if (!pixelCrop || !imgRef.current || pixelCrop.width < 1) return
     clearTimeout(debRef.current)

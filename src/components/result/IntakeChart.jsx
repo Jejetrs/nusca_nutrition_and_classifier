@@ -29,6 +29,8 @@ function barColor(pct) {
 }
 
 // Grafik batang: %AKG per SAJIAN terhadap batas harian.
+// Garis 100% = batas konsumsi harian; di bawah tiap batang ditampilkan
+// angka aktual "terpakai / batas" (mis. gula 19 g / 50 g).
 export default function IntakeChart({ calc }) {
   const p = calc.pct_harian_sajian || calc.pct_harian_kemasan
   const bars = [
