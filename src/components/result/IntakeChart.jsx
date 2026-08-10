@@ -12,12 +12,17 @@ const DAILY = {
   Lemak:   { limit: 67,   unit: 'g'  },
 }
 
-// nilai aktual per sajian dari hasil ekstraksi (angka asli pada label)
-function consumedOf(name, calc) {
+// Nilai aktual per sajian. Utama: dari `per_sajian` (angka asli label).
+// Cadangan (robust): turunkan dari %AKG batang itu sendiri -> (%/100) x batas,
+// sehingga tetap tampil walau `per_sajian` tak ada di respons.
+function consumedOf(name, pctVal, limit, calc) {
   const ps = calc.per_sajian || {}
-  if (name === 'Gula')    return ps.gula_g
-  if (name === 'Natrium') return ps.natrium_mg
-  if (name === 'Lemak')   return ps.lemak_g
+  const direct =
+    name === 'Gula' ? ps.gula_g :
+    name === 'Natrium' ? ps.natrium_mg :
+    name === 'Lemak' ? ps.lemak_g : null
+  if (direct != null) return direct
+  if (pctVal != null) return (pctVal / 100) * limit
   return null
 }
 
@@ -75,9 +80,9 @@ export default function IntakeChart({ calc }) {
               const capped = Math.min(Math.max(val, 0), CEIL)
               const h = val > 0 ? Math.max(6, Math.round((capped / CEIL) * MAXH)) : 3
               const d = DAILY[name]
-              const consumed = consumedOf(name, calc)
+              const consumed = consumedOf(name, val, d.limit, calc)
               const amountTxt = consumed != null
-                ? `${commaDecimal(consumed)} ${d.unit} / ${d.limit} ${d.unit}`
+                ? `${commaDecimal(Math.round(consumed * 10) / 10)} ${d.unit} / ${d.limit} ${d.unit}`
                 : `batas ${d.limit} ${d.unit}/hari`
               return (
                 <div className="ns-bar-col" key={name}>
