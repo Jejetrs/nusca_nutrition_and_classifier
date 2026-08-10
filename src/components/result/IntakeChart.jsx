@@ -1,30 +1,40 @@
-import { pct as pctStr } from '../../lib/format.js'
+import { pct as pctStr, commaDecimal } from '../../lib/format.js'
 
 const COLOR_OPTIMAL = '#16A34A'
 const COLOR_SEDANG = '#F59E0B'
 const COLOR_BERLEBIH = '#EF4444'
 
-function barColor(pct) {
-  if (pct == null) return COLOR_OPTIMAL
-  if (pct >= 100) return COLOR_BERLEBIH
-  if (pct >= 50)  return COLOR_SEDANG
+// Batas konsumsi harian per komponen (gram/hari) sesuai pedoman Kemenkes.
+// Sumbu-Y tiap batang berskala pada batas hariannya sendiri (ada 3 garis batas).
+const DAILY = {
+  gula:  { label: 'Gula',    limitG: 50, unit: 'g' },
+  garam: { label: 'Garam',   limitG: 5,  unit: 'g' },
+  lemak: { label: 'Lemak',   limitG: 67, unit: 'g' },
+}
+
+function barColor(p) {
+  if (p == null) return COLOR_OPTIMAL
+  if (p >= 100) return COLOR_BERLEBIH
+  if (p >= 50)  return COLOR_SEDANG
   return COLOR_OPTIMAL
 }
 
-// Grafik batang: %AKG per SAJIAN terhadap batas harian (standar label BPOM)
+// Grafik "Asupan vs Batas Harian":
+//   - Sumbu Y = gram, berskala pada batas harian TIAP komponen (3 garis batas: 50 g / 5 g / 67 g).
+//   - Tinggi batang = %AKG per sajian (konsumsi bila dihabiskan sekali) -> nilai yg sama spt sebelumnya.
 export default function IntakeChart({ calc }) {
   const p = calc.pct_harian_sajian || calc.pct_harian_kemasan
-  const bars = [
-    ['Gula',    p.gula,    barColor(p.gula)],
-    ['Natrium', p.natrium, barColor(p.natrium)],
-    ['Lemak',   p.lemak,   barColor(p.lemak)],
+  const rows = [
+    ['gula', p.gula],
+    ['garam', p.natrium],
+    ['lemak', p.lemak],
   ].filter(([, v]) => v != null)
 
-  if (bars.length === 0) return null
+  if (rows.length === 0) return null
 
-  const MAXH = 150
-  const CEIL = 120
-  const guide = Math.round((100 / CEIL) * MAXH)
+  const MAXH = 168          // tinggi area plot (px)
+  const CEIL = 120          // langit-langit tampilan = 120% dari batas harian
+  const limitY = Math.round((100 / CEIL) * MAXH)   // posisi garis batas 100% (px dari dasar)
 
   return (
     <div className="ns-chart-card">
@@ -37,37 +47,39 @@ export default function IntakeChart({ calc }) {
         </div>
       </div>
       <div className="ns-chart-sub">
-        %AKG per sajian terhadap batas konsumsi harian
+        Tinggi batang = %AKG per sajian · garis putus-putus = batas konsumsi harian tiap komponen
       </div>
 
-      <div className="ns-chart-plot">
-        <div className="ns-chart-yaxis">% Batas Harian</div>
-        <div className="ns-chart-grid">
-          <div className="ns-guide ns-guide-100" style={{ bottom: guide + 26 }}>
-            <span className="ns-guide-tag">100%</span>
-          </div>
-          <div className="ns-guide ns-guide-0" style={{ bottom: 26 }}>
-            <span className="ns-guide-tag">0%</span>
-          </div>
-
-          <div className="ns-bars" style={{ height: MAXH + 26 }}>
-            {bars.map(([name, val, color]) => {
-              const capped = Math.min(Math.max(val, 0), CEIL)
-              const h = val > 0 ? Math.max(6, Math.round((capped / CEIL) * MAXH)) : 3
-              return (
-                <div className="ns-bar-col" key={name}>
-                  <div className="ns-bar-track" style={{ height: MAXH }}>
-                    <div className="ns-bar-pct" style={{ bottom: h + 6, color }}>
-                      {pctStr(val)}
-                    </div>
-                    <div className="ns-bar-fill" style={{ height: h, background: color }} />
-                  </div>
-                  <div className="ns-bar-label">{name}</div>
+      <div className="ns-intake-plot">
+        {rows.map(([key, pctVal]) => {
+          const d = DAILY[key]
+          const color = barColor(pctVal)
+          const capped = Math.min(Math.max(pctVal, 0), CEIL)
+          const h = pctVal > 0 ? Math.max(6, Math.round((capped / CEIL) * MAXH)) : 3
+          const consumedG = (pctVal / 100) * d.limitG   // gram dikonsumsi per sajian (turunan dari %AKG)
+          return (
+            <div className="ns-intake-col" key={key}>
+              <div className="ns-intake-track" style={{ height: MAXH }}>
+                {/* garis batas harian komponen (gram) */}
+                <div className="ns-intake-limit" style={{ bottom: limitY }}>
+                  <span className="ns-intake-limit-tag">{d.limitG} {d.unit}/hari</span>
                 </div>
-              )
-            })}
-          </div>
-        </div>
+                {/* dasar 0 g */}
+                <div className="ns-intake-base"><span className="ns-intake-base-tag">0 {d.unit}</span></div>
+                {/* nilai %AKG di atas batang */}
+                <div className="ns-intake-pct" style={{ bottom: h + 6, color }}>
+                  {pctStr(pctVal)}
+                </div>
+                {/* batang */}
+                <div className="ns-intake-fill" style={{ height: h, background: color }} />
+              </div>
+              <div className="ns-intake-label">
+                <b>{d.label}</b>
+                <small>{commaDecimal(consumedG)} {d.unit} / {d.limitG} {d.unit}</small>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
