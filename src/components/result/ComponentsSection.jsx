@@ -46,7 +46,6 @@ function ComponentCard({ comp, calc, fields }) {
   const kemVal = kemKey && calc.per_kemasan ? calc.per_kemasan[kemKey] : null
   const kemTxt = kemVal != null ? `${asIs(kemVal)} ${unit}` : null
 
-
   // Catatan komposisi gula: sukrosa & laktosa (laktosa dikurangi saat hitung level)
   const chips = []
   if (fkey === 'gula') {

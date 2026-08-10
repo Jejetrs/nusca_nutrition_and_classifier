@@ -829,21 +829,17 @@
 .ns-bar-track { position: relative; width: 100%; display: flex; align-items: flex-end; justify-content: center; }
 .ns-bar-pct { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 800; font-size: 13.5px; white-space: nowrap; }
 .ns-bar-fill { width: min(70%, 130px); border-radius: 7px 7px 3px 3px; transition: height .5s ease; }
-.ns-bar-label { height: 26px; display: flex; align-items: center; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+.ns-bar-label { min-height: 40px; display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
 
-/* ==== Grafik Asupan vs Batas Harian (skala gram per komponen) ==== */
-.ns-intake-plot { display: flex; gap: 10px; margin-top: 26px; justify-content: space-around; }
-.ns-intake-col { display: flex; flex-direction: column; align-items: center; flex: 1; }
-.ns-intake-track { position: relative; width: 100%; display: flex; align-items: flex-end; justify-content: center; }
-.ns-intake-limit { position: absolute; left: 0; right: 0; border-top: 2px dashed rgba(192,36,27,.55); }
-.ns-intake-limit-tag { position: absolute; right: 0; top: -9px; font-size: 11px; font-weight: 800; color: #b91c1c; background: #fff; padding: 0 4px; white-space: nowrap; }
-.ns-intake-base { position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--line); }
-.ns-intake-base-tag { position: absolute; left: 0; top: 1px; font-size: 10.5px; color: var(--muted); font-weight: 600; background: #fff; padding-right: 5px; }
-.ns-intake-pct { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 800; font-size: 13.5px; white-space: nowrap; }
-.ns-intake-fill { width: min(64%, 118px); border-radius: 7px 7px 3px 3px; transition: height .5s ease; }
-.ns-intake-label { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 10px; text-align: center; }
-.ns-intake-label b { font-size: 13px; color: var(--ink-soft); font-weight: 700; }
-.ns-intake-label small { font-size: 11px; color: var(--muted); font-weight: 600; }
+.ns-bar-label b { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.ns-bar-label small { font-size: 10.5px; font-weight: 600; color: var(--muted); }
+/* garis '100%' ditegaskan sebagai batas konsumsi harian */
+.ns-guide-limit { font-weight: 800; color: #b91c1c; }
+/* legenda batas konsumsi harian (dipindah dari kartu) */
+.ns-chart-limits { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+.ns-chart-limits-title { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.ns-chart-limit-item { font-size: 12.5px; color: var(--ink-soft); font-weight: 600; background: rgba(15,23,42,.04); border-radius: 999px; padding: 3px 12px; }
+.ns-chart-limit-item b { color: var(--ink); font-weight: 800; }
 
 
 /* ══════════════════════════ CONSUMPTION TIPS ════════════════ */
