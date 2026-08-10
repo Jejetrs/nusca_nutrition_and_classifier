@@ -149,9 +149,10 @@ export default function LabelBreakdown({ calc, fields, panelImage, mode }) {
             const unit = p100Key === 'garam' ? 'mg' : 'g'
             const display = p100 != null ? `${commaDecimal(p100)}${unit}` : '—'
             const lv = calc.level[lvKey]
-            const pv = calc.pct_harian_kemasan[pctKey]
+            const pv = calc.persen_nl ? calc.persen_nl[p100Key] : null  // Kepmenkes butir 8
             const showPct = p100 != null && pv != null
-            const fill = showPct ? Math.min(pv, 100) : 0
+            const LVL_FILL = { A: 25, B: 50, C: 75, D: 100 }
+            const fill = lv ? LVL_FILL[lv] : 0
             return (
               <div className="ns-calc-row" key={name}>
                 <div className="ns-calc-top">
@@ -162,7 +163,7 @@ export default function LabelBreakdown({ calc, fields, panelImage, mode }) {
                 <div className="ns-calc-bar">
                   <div style={{ width: `${fill}%`, background: color }} />
                 </div>
-                <div className="ns-calc-daily">{showPct ? pctStr(pv) : '—'} NILAI HARIAN</div>
+                <div className="ns-calc-daily">{showPct ? pctStr(pv) : '—'} · per 100 ml</div>
               </div>
             )
           })}

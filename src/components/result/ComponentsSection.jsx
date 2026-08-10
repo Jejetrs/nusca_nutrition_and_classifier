@@ -35,7 +35,7 @@ function ComponentCard({ comp, calc, fields }) {
   const lv = calc.level[fkey]
   const p100 = calc.per100[fkey]
   const col = lv ? NL_OFFICIAL[lv] : NA_COLOR
-  const pv = calc.pct_harian_kemasan[pctKey]
+  const pv = calc.persen_nl ? calc.persen_nl[fkey] : null   // % Nutri-Level (Kepmenkes butir 8)
   const insight = componentInsight(fkey, lv)
   const bounds = scaleBounds(fkey)
 

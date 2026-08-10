@@ -138,12 +138,13 @@ export function buildAlerts(calc, fields) {
     if (lv === 'C' || lv === 'D') {
       const raw = fields[key] != null && fields[key] !== '' ? fields[key] : key === 'lemak_jenuh' ? '0' : '?'
       const p100 = calc.per100[key]
-      const p = p100 != null ? calc.pct_harian_kemasan[pctKey[key]] : null
+      const pctSrc = calc.pct_harian_sajian || calc.pct_harian_kemasan
+      const p = p100 != null ? pctSrc[pctKey[key]] : null
       const p100s = p100 != null ? `${commaDecimal(p100)} ${unit[key]}/100 ml` : ''
       if (p != null) {
         out.push(
           `Minuman ini mengandung <strong>${raw}</strong> ${lbl[key]} per sajian (≈ ${p100s}). ` +
-            `Setara <strong>${pctStr(p)}</strong> dari batas konsumsi harian.`,
+            `Setara <strong>${pctStr(p)}</strong> dari batas konsumsi harian per sajian.`,
         )
       } else {
         const tinggi = lv === 'D' ? 'tinggi' : 'sedang'

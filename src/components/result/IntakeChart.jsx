@@ -11,9 +11,9 @@ function barColor(pct) {
   return COLOR_OPTIMAL
 }
 
-// Grafik batang: % asupan per kemasan terhadap batas harian (Permenkes 30/2013)
+// Grafik batang: %AKG per SAJIAN terhadap batas harian (standar label BPOM)
 export default function IntakeChart({ calc }) {
-  const p = calc.pct_harian_kemasan
+  const p = calc.pct_harian_sajian || calc.pct_harian_kemasan
   const bars = [
     ['Gula',    p.gula,    barColor(p.gula)],
     ['Natrium', p.natrium, barColor(p.natrium)],
@@ -37,7 +37,7 @@ export default function IntakeChart({ calc }) {
         </div>
       </div>
       <div className="ns-chart-sub">
-        % terhadap batas konsumsi harian · per kemasan utuh
+        %AKG per sajian terhadap batas konsumsi harian
       </div>
 
       <div className="ns-chart-plot">
