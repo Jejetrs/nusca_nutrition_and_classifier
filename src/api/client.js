@@ -1,6 +1,6 @@
 // api/client.js — komunikasi dengan backend FastAPI
 
-// Base URL: harus didefinisikan lewat VITE_API_BASE di environment.
+// Base URL: didefinisikan di VITE_API_BASE di environment.
 const BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/$/, '')
 const url = (path) => `${BASE}${path}`
 

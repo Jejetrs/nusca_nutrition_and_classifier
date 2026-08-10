@@ -1,12 +1,25 @@
-import { pct as pctStr } from '../../lib/format.js'
+import { pct as pctStr, commaDecimal } from '../../lib/format.js'
 
 const COLOR_OPTIMAL = '#16A34A'
 const COLOR_SEDANG = '#F59E0B'
 const COLOR_BERLEBIH = '#EF4444'
 
-// Batas konsumsi harian per komponen (dipindah dari kartu Nutri-Level ke chart ini
-// sebagai legenda). Ditampilkan di bawah tiap batang + baris legenda.
-const DAILY_LIMIT = { Gula: '50 g', Natrium: '5 g', Lemak: '67 g' }
+// Batas konsumsi harian per komponen, dalam satuan sesuai label (dipindah dari kartu
+// Nutri-Level ke chart ini). Natrium memakai mg (2.000 mg ≈ 5 g garam).
+const DAILY = {
+  Gula:    { limit: 50,   unit: 'g'  },
+  Natrium: { limit: 2000, unit: 'mg' },
+  Lemak:   { limit: 67,   unit: 'g'  },
+}
+
+// nilai aktual per sajian dari hasil ekstraksi (angka asli pada label)
+function consumedOf(name, calc) {
+  const ps = calc.per_sajian || {}
+  if (name === 'Gula')    return ps.gula_g
+  if (name === 'Natrium') return ps.natrium_mg
+  if (name === 'Lemak')   return ps.lemak_g
+  return null
+}
 
 function barColor(pct) {
   if (pct == null) return COLOR_OPTIMAL
@@ -16,7 +29,6 @@ function barColor(pct) {
 }
 
 // Grafik batang: %AKG per SAJIAN terhadap batas harian.
-// Garis 100% = batas konsumsi harian (user tahu di mana batasnya).
 export default function IntakeChart({ calc }) {
   const p = calc.pct_harian_sajian || calc.pct_harian_kemasan
   const bars = [
@@ -49,17 +61,22 @@ export default function IntakeChart({ calc }) {
         <div className="ns-chart-yaxis">% Batas Harian</div>
         <div className="ns-chart-grid">
           {/* garis 100% = BATAS konsumsi harian */}
-          <div className="ns-guide ns-guide-100" style={{ bottom: guide + 40 }}>
+          <div className="ns-guide ns-guide-100" style={{ bottom: guide + 44 }}>
             <span className="ns-guide-tag ns-guide-limit">Batas harian · 100%</span>
           </div>
-          <div className="ns-guide ns-guide-0" style={{ bottom: 40 }}>
+          <div className="ns-guide ns-guide-0" style={{ bottom: 44 }}>
             <span className="ns-guide-tag">0%</span>
           </div>
 
-          <div className="ns-bars" style={{ height: MAXH + 40 }}>
+          <div className="ns-bars" style={{ height: MAXH + 44 }}>
             {bars.map(([name, val, color]) => {
               const capped = Math.min(Math.max(val, 0), CEIL)
               const h = val > 0 ? Math.max(6, Math.round((capped / CEIL) * MAXH)) : 3
+              const d = DAILY[name]
+              const consumed = consumedOf(name, calc)
+              const amountTxt = consumed != null
+                ? `${commaDecimal(consumed)} ${d.unit} / ${d.limit} ${d.unit}`
+                : `batas ${d.limit} ${d.unit}/hari`
               return (
                 <div className="ns-bar-col" key={name}>
                   <div className="ns-bar-track" style={{ height: MAXH }}>
@@ -70,7 +87,8 @@ export default function IntakeChart({ calc }) {
                   </div>
                   <div className="ns-bar-label">
                     <b>{name}</b>
-                    <small>batas {DAILY_LIMIT[name]}/hari</small>
+                    <small className="ns-bar-amount">{amountTxt}</small>
+                    <small className="ns-bar-limit">dari batas {d.limit} {d.unit}/hari</small>
                   </div>
                 </div>
               )
@@ -83,7 +101,7 @@ export default function IntakeChart({ calc }) {
       <div className="ns-chart-limits">
         <span className="ns-chart-limits-title">Batas konsumsi harian</span>
         <span className="ns-chart-limit-item">Gula <b>50 g</b>/hari</span>
-        <span className="ns-chart-limit-item">Garam <b>5 g</b>/hari</span>
+        <span className="ns-chart-limit-item">Natrium <b>2.000 mg</b>/hari <i>(≈ garam 5 g)</i></span>
         <span className="ns-chart-limit-item">Lemak <b>67 g</b>/hari</span>
       </div>
     </div>

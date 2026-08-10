@@ -10,7 +10,7 @@ import { pct as pctStr, commaDecimal } from '../../lib/format.js'
 const GRADES = ['A', 'B', 'C', 'D']
 
 // Tiga komponen GGL sesuai pedoman Kemenkes.
-// kemKey = kunci nilai per kemasan utuh; lemak jenuh tidak punya nilai per kemasan.
+// kunci nilai per kemasan utuh; lemak jenuh tidak punya nilai per kemasan.
 const CARDS = [
   { fkey: 'gula', title: 'Gula', unit: 'g', pctKey: 'gula', kemKey: 'gula_g' },
   { fkey: 'garam', title: 'Garam (Natrium)', unit: 'mg', pctKey: 'natrium', kemKey: 'natrium_mg' },
@@ -35,7 +35,7 @@ function ComponentCard({ comp, calc, fields }) {
   const lv = calc.level[fkey]
   const p100 = calc.per100[fkey]
   const col = lv ? NL_OFFICIAL[lv] : NA_COLOR
-  const pv = calc.persen_nl ? calc.persen_nl[fkey] : null   // % Nutri-Level (Kepmenkes butir 8)
+  const pv = calc.persen_nl ? calc.persen_nl[fkey] : null   // % Nutri-Level
   const insight = componentInsight(fkey, lv)
   const bounds = scaleBounds(fkey)
 

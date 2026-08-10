@@ -12,7 +12,7 @@ export default function ResultScreen({ result, onRestart }) {
   const [dialog, setDialog] = useState(false)
   const verified = mode === 'model' ? 'Dianalisis AI' : 'Mode Demo · contoh ilustrasi'
 
-  // Gambar bukan label gizi (ditolak gerbang backend) -> pesan jelas, jangan render hasil kosong.
+  // Gambar bukan label gizi (ditolak gerbang backend)
   if (mode === 'no_label' || (fields && Object.keys(fields).length === 0)) {
     return (
       <div className="ns-result">

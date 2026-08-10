@@ -833,6 +833,11 @@
 
 .ns-bar-label b { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
 .ns-bar-label small { font-size: 10.5px; font-weight: 600; color: var(--muted); }
+
+.ns-bar-amount { font-size: 12px; font-weight: 800; color: var(--ink); }
+.ns-bar-limit { font-size: 10px; font-weight: 600; color: var(--muted); }
+.ns-chart-limit-item i { font-style: normal; color: var(--muted); font-weight: 600; }
+
 /* garis '100%' ditegaskan sebagai batas konsumsi harian */
 .ns-guide-limit { font-weight: 800; color: #b91c1c; }
 /* legenda batas konsumsi harian (dipindah dari kartu) */
