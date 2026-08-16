@@ -13,7 +13,7 @@ const DAILY = {
 }
 
 // Nilai aktual per sajian. Utama: dari `per_sajian` (angka asli label).
-// Cadangan (robust): turunkan dari %AKG batang itu sendiri -> (%/100) x batas,
+// Cadangan (robust): turunkan dari batas konsumsi batang itu sendiri -> (%/100) x batas,
 // sehingga tetap tampil walau `per_sajian` tak ada di respons.
 function consumedOf(name, pctVal, limit, calc) {
   const ps = calc.per_sajian || {}
@@ -33,7 +33,7 @@ function barColor(pct) {
   return COLOR_OPTIMAL
 }
 
-// Grafik batang: %AKG per SAJIAN terhadap batas harian.
+// Grafik batang: konsumsi harian per SAJIAN terhadap batas harian.
 // Garis 100% = batas konsumsi harian; di bawah tiap batang ditampilkan
 // angka aktual "terpakai / batas" (mis. gula 19 g / 50 g).
 export default function IntakeChart({ calc }) {
@@ -61,7 +61,7 @@ export default function IntakeChart({ calc }) {
         </div>
       </div>
       <div className="ns-chart-sub">
-        %AKG per sajian terhadap batas konsumsi harian
+        Persentase per sajian terhadap batas konsumsi harian
       </div>
 
       <div className="ns-chart-plot">
