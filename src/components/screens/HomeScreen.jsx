@@ -118,7 +118,7 @@ export default function HomeScreen({ onPhoto }) {
           </div>
           <div className="ns-source-title green">Ambil Foto Langsung</div>
           <div className="ns-source-sub">
-            Gunakan kamera ponsel Anda untuk mengambil foto label nutrisi secara real-time.
+            Gunakan kamera perangkat Anda untuk mengambil foto label nutrisi secara real-time.
           </div>
           <button className="ns-btn primary block" type="button">
             <ApertureIcon /> Buka Kamera
