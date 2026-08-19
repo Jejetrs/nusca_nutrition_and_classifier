@@ -78,7 +78,7 @@ export default function HomeScreen({ onPhoto }) {
         </h1>
 
         <p className="ns-hero-desc">
-          Foto label Informasi Nilai Gizi pada kemasan minuman untuk mendapatkan hasil analisis
+          Foto tabel Informasi Nilai Gizi pada kemasan minuman untuk mendapatkan hasil analisis
           nutrisi dan skor Nutri-Level secara otomatis.
         </p>
 
@@ -248,7 +248,7 @@ function LabelExample() {
   return (
     <img
       src={contohLabel}
-      alt="Contoh foto label Informasi Nilai Gizi"
+      alt="Contoh foto tabel Informasi Nilai Gizi"
       style={{ width: '80%', height: '100%', objectFit: 'cover', borderRadius: '18px' }}
     />
   )
